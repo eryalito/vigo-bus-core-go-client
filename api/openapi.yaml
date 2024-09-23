@@ -1,0 +1,426 @@
+openapi: 3.0.0
+info:
+  contact: {}
+  description: This is the API for the Vigo Bus Core project.
+  title: Vigo Bus Core API
+  version: "1.0"
+servers:
+- url: //localhost:8080
+security:
+- BearerAuth: []
+paths:
+  /api/lines:
+    get:
+      description: Provide a list of all the lines
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/api.Line'
+                type: array
+          description: OK
+      summary: List all of the lines
+      tags:
+      - Bus
+  /api/stops:
+    get:
+      description: Provide a list of all the stops
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/api.Stop'
+                type: array
+          description: OK
+      summary: List all of the stops
+      tags:
+      - Bus
+  /api/stops/{stop_number}:
+    get:
+      description: Provide a stop by its number
+      parameters:
+      - description: Stop Number
+        explode: false
+        in: path
+        name: stop_number
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Stop'
+          description: OK
+      summary: Get a stop by its number
+      tags:
+      - Bus
+  /api/stops/{stop_number}/schedule:
+    get:
+      description: Provide the schedule for a stop
+      parameters:
+      - description: Stop Number
+        explode: false
+        in: path
+        name: stop_number
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/api.StopSchedule'
+                type: array
+          description: OK
+      summary: Get the schedule for a stop
+      tags:
+      - Bus
+  /api/stops/find:
+    get:
+      description: Provide a list of stops that match the text in their name
+      parameters:
+      - description: Text to search for in stop name
+        explode: true
+        in: query
+        name: text
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/api.Stop'
+                type: array
+          description: OK
+      summary: Find a stop by text in its name
+      tags:
+      - Bus
+  /api/stops/find/location:
+    get:
+      description: Provide a list of stops in a given radius around a location
+      parameters:
+      - description: Latitude
+        explode: true
+        in: query
+        name: lat
+        required: true
+        schema:
+          type: number
+        style: form
+      - description: Longitude
+        explode: true
+        in: query
+        name: lon
+        required: true
+        schema:
+          type: number
+        style: form
+      - description: Radius in meters
+        explode: true
+        in: query
+        name: radius
+        required: true
+        schema:
+          type: number
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/api.Stop'
+                type: array
+          description: OK
+      summary: Find a stop by its location
+      tags:
+      - Bus
+  /api/users/{provider}/{uuid}:
+    get:
+      description: Provide a user by its UUID for a specific provider
+      parameters:
+      - description: Provider
+        explode: false
+        in: path
+        name: provider
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: UUID
+        explode: false
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Identity'
+          description: OK
+      summary: Get a user by its UUID for a specific provider
+      tags:
+      - Identity
+    post:
+      description: Create a new user
+      parameters:
+      - description: Provider
+        explode: false
+        in: path
+        name: provider
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: UUID
+        explode: false
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Identity'
+          description: OK
+      summary: Create a new user
+      tags:
+      - Identity
+  /api/users/{provider}/{uuid}/favorite_stops/{stop_number}:
+    delete:
+      description: Remove a favorite stop from a user
+      parameters:
+      - description: Provider
+        explode: false
+        in: path
+        name: provider
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: UUID
+        explode: false
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Stop Number
+        explode: false
+        in: path
+        name: stop_number
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Identity'
+          description: OK
+      summary: Remove a favorite stop from a user
+      tags:
+      - Identity
+    post:
+      description: Add a favorite stop to a user
+      parameters:
+      - description: Provider
+        explode: false
+        in: path
+        name: provider
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: UUID
+        explode: false
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: Stop Number
+        explode: false
+        in: path
+        name: stop_number
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Identity'
+          description: OK
+      summary: Add a favorite stop to a user
+      tags:
+      - Identity
+components:
+  schemas:
+    api.Identity:
+      example:
+        favorite_stops:
+        - stop_id: 5
+          name: name
+          location:
+            lon: 1.4658129805029452
+            lat: 6.027456183070403
+          stop_number: 5
+          id: 0
+        - stop_id: 5
+          name: name
+          location:
+            lon: 1.4658129805029452
+            lat: 6.027456183070403
+          stop_number: 5
+          id: 0
+        provider: ""
+        id: 0
+        uuid: uuid
+      properties:
+        favorite_stops:
+          description: FavoriteStops is a list of the user's favorite stops
+          items:
+            $ref: '#/components/schemas/api.Stop'
+          type: array
+        id:
+          description: ID is the unique identifier of the identity
+          type: integer
+        provider:
+          allOf:
+          - $ref: '#/components/schemas/api.ProviderType'
+          description: Provider is the type of the identity provider
+        uuid:
+          description: "UUID is the unique identifier of the identity, usually provided\
+            \ by the auth provider"
+          type: string
+      type: object
+    api.Line:
+      example:
+        name: name
+        id: 0
+      properties:
+        id:
+          description: ID is the unique identifier of the line
+          type: integer
+        name:
+          description: Name is the name of the line provided by the bus company
+          type: string
+      type: object
+    api.ProviderType:
+      enum:
+      - telegram
+      type: string
+      x-enum-varnames:
+      - ProviderTypeTelegram
+    api.Schedule:
+      example:
+        route: route
+        line: ""
+        time: 0
+      properties:
+        line:
+          allOf:
+          - $ref: '#/components/schemas/api.Line'
+          description: Line is the line that the schedule is for
+        route:
+          description: Route is the route that the schedule is for
+          type: string
+        time:
+          description: Time is the time of the schedule
+          type: integer
+      type: object
+    api.Stop:
+      example:
+        stop_id: 5
+        name: name
+        location:
+          lon: 1.4658129805029452
+          lat: 6.027456183070403
+        stop_number: 5
+        id: 0
+      properties:
+        id:
+          description: ID is the unique identifier of the stop
+          type: integer
+        location:
+          $ref: '#/components/schemas/api_Stop_location'
+        name:
+          description: Name is the name of the stop
+          type: string
+        stop_id:
+          description: StopID is the number of the stop used internally by the bus
+            company
+          type: integer
+        stop_number:
+          description: StopNumber is the number of the stop provided by the bus company
+          type: integer
+      type: object
+    api.StopSchedule:
+      example:
+        stop: ""
+        schedules:
+        - route: route
+          line: ""
+          time: 0
+        - route: route
+          line: ""
+          time: 0
+      properties:
+        schedules:
+          description: Schedules is a list of the schedules for the stop
+          items:
+            $ref: '#/components/schemas/api.Schedule'
+          type: array
+        stop:
+          allOf:
+          - $ref: '#/components/schemas/api.Stop'
+          description: Stop is the stop that the schedule is for
+      type: object
+    api_Stop_location:
+      description: Location is the geographical location of the stop
+      example:
+        lon: 1.4658129805029452
+        lat: 6.027456183070403
+      properties:
+        lat:
+          description: Lat is the latitude of the stop
+          type: number
+        lon:
+          description: Lon is the longitude of the stop
+          type: number
+      type: object
+  securitySchemes:
+    BearerAuth:
+      description: '"Type ''Bearer'' followed by a space and then your token."'
+      in: header
+      name: Authorization
+      type: apiKey
