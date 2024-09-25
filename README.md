@@ -81,6 +81,7 @@ Class | Method | HTTP request | Description
 *BusAPI* | [**ApiLinesGet**](docs/BusAPI.md#apilinesget) | **Get** /api/lines | List all of the lines
 *BusAPI* | [**ApiStopsFindGet**](docs/BusAPI.md#apistopsfindget) | **Get** /api/stops/find | Find a stop by text in its name
 *BusAPI* | [**ApiStopsFindLocationGet**](docs/BusAPI.md#apistopsfindlocationget) | **Get** /api/stops/find/location | Find a stop by its location
+*BusAPI* | [**ApiStopsFindLocationImageGet**](docs/BusAPI.md#apistopsfindlocationimageget) | **Get** /api/stops/find/location/image | Get the nearby stops as a PNG image and JSON array
 *BusAPI* | [**ApiStopsGet**](docs/BusAPI.md#apistopsget) | **Get** /api/stops | List all of the stops
 *BusAPI* | [**ApiStopsStopNumberGet**](docs/BusAPI.md#apistopsstopnumberget) | **Get** /api/stops/{stop_number} | Get a stop by its number
 *BusAPI* | [**ApiStopsStopNumberScheduleGet**](docs/BusAPI.md#apistopsstopnumberscheduleget) | **Get** /api/stops/{stop_number}/schedule | Get the schedule for a stop
@@ -94,6 +95,8 @@ Class | Method | HTTP request | Description
 
  - [ApiIdentity](docs/ApiIdentity.md)
  - [ApiLine](docs/ApiLine.md)
+ - [ApiNearbyStops](docs/ApiNearbyStops.md)
+ - [ApiNearbyStopsOrigin](docs/ApiNearbyStopsOrigin.md)
  - [ApiProviderType](docs/ApiProviderType.md)
  - [ApiSchedule](docs/ApiSchedule.md)
  - [ApiStop](docs/ApiStop.md)

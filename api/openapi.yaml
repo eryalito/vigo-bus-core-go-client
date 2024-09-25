@@ -39,52 +39,6 @@ paths:
       summary: List all of the stops
       tags:
       - Bus
-  /api/stops/{stop_number}:
-    get:
-      description: Provide a stop by its number
-      parameters:
-      - description: Stop Number
-        explode: false
-        in: path
-        name: stop_number
-        required: true
-        schema:
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/api.Stop'
-          description: OK
-      summary: Get a stop by its number
-      tags:
-      - Bus
-  /api/stops/{stop_number}/schedule:
-    get:
-      description: Provide the schedule for a stop
-      parameters:
-      - description: Stop Number
-        explode: false
-        in: path
-        name: stop_number
-        required: true
-        schema:
-          type: integer
-        style: simple
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: '#/components/schemas/api.StopSchedule'
-                type: array
-          description: OK
-      summary: Get the schedule for a stop
-      tags:
-      - Bus
   /api/stops/find:
     get:
       description: Provide a list of stops that match the text in their name
@@ -147,6 +101,99 @@ paths:
                 type: array
           description: OK
       summary: Find a stop by its location
+      tags:
+      - Bus
+  /api/stops/find/location/image:
+    get:
+      description: Provide the nearby stops for a location and return a PNG image
+        and JSON array
+      parameters:
+      - description: Latitude
+        explode: true
+        in: query
+        name: lat
+        required: true
+        schema:
+          type: number
+        style: form
+      - description: Longitude
+        explode: true
+        in: query
+        name: lon
+        required: true
+        schema:
+          type: number
+        style: form
+      - description: Radius in meters
+        explode: true
+        in: query
+        name: radius
+        required: true
+        schema:
+          type: number
+        style: form
+      - description: "Limit of stops to return, default 9"
+        explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.NearbyStops'
+          description: OK
+      summary: Get the nearby stops as a PNG image and JSON array
+      tags:
+      - Bus
+  /api/stops/{stop_number}:
+    get:
+      description: Provide a stop by its number
+      parameters:
+      - description: Stop Number
+        explode: false
+        in: path
+        name: stop_number
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Stop'
+          description: OK
+      summary: Get a stop by its number
+      tags:
+      - Bus
+  /api/stops/{stop_number}/schedule:
+    get:
+      description: Provide the schedule for a stop
+      parameters:
+      - description: Stop Number
+        explode: false
+        in: path
+        name: stop_number
+        required: true
+        schema:
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/api.StopSchedule'
+                type: array
+          description: OK
+      summary: Get the schedule for a stop
       tags:
       - Bus
   /api/users/{provider}/{uuid}:
@@ -335,6 +382,40 @@ components:
           description: Name is the name of the line provided by the bus company
           type: string
       type: object
+    api.NearbyStops:
+      example:
+        image: image
+        origin:
+          lon: 6.027456183070403
+          lat: 0.8008281904610115
+        stops:
+        - stop_id: 5
+          name: name
+          location:
+            lon: 1.4658129805029452
+            lat: 6.027456183070403
+          stop_number: 5
+          id: 0
+        - stop_id: 5
+          name: name
+          location:
+            lon: 1.4658129805029452
+            lat: 6.027456183070403
+          stop_number: 5
+          id: 0
+        radius: 1.4658129805029452
+      properties:
+        image:
+          type: string
+        origin:
+          $ref: '#/components/schemas/api_NearbyStops_origin'
+        radius:
+          type: number
+        stops:
+          items:
+            $ref: '#/components/schemas/api.Stop'
+          type: array
+      type: object
     api.ProviderType:
       enum:
       - telegram
@@ -404,6 +485,16 @@ components:
           allOf:
           - $ref: '#/components/schemas/api.Stop'
           description: Stop is the stop that the schedule is for
+      type: object
+    api_NearbyStops_origin:
+      example:
+        lon: 6.027456183070403
+        lat: 0.8008281904610115
+      properties:
+        lat:
+          type: number
+        lon:
+          type: number
       type: object
     api_Stop_location:
       description: Location is the geographical location of the stop

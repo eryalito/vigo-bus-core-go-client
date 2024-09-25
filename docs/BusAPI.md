@@ -7,6 +7,7 @@ Method | HTTP request | Description
 [**ApiLinesGet**](BusAPI.md#ApiLinesGet) | **Get** /api/lines | List all of the lines
 [**ApiStopsFindGet**](BusAPI.md#ApiStopsFindGet) | **Get** /api/stops/find | Find a stop by text in its name
 [**ApiStopsFindLocationGet**](BusAPI.md#ApiStopsFindLocationGet) | **Get** /api/stops/find/location | Find a stop by its location
+[**ApiStopsFindLocationImageGet**](BusAPI.md#ApiStopsFindLocationImageGet) | **Get** /api/stops/find/location/image | Get the nearby stops as a PNG image and JSON array
 [**ApiStopsGet**](BusAPI.md#ApiStopsGet) | **Get** /api/stops | List all of the stops
 [**ApiStopsStopNumberGet**](BusAPI.md#ApiStopsStopNumberGet) | **Get** /api/stops/{stop_number} | Get a stop by its number
 [**ApiStopsStopNumberScheduleGet**](BusAPI.md#ApiStopsStopNumberScheduleGet) | **Get** /api/stops/{stop_number}/schedule | Get the schedule for a stop
@@ -195,6 +196,78 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**[]ApiStop**](ApiStop.md)
+
+### Authorization
+
+[BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
+
+## ApiStopsFindLocationImageGet
+
+> ApiNearbyStops ApiStopsFindLocationImageGet(ctx).Lat(lat).Lon(lon).Radius(radius).Limit(limit).Execute()
+
+Get the nearby stops as a PNG image and JSON array
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/eryalito/vigo-bus-core-go-client"
+)
+
+func main() {
+	lat := float32(8.14) // float32 | Latitude
+	lon := float32(8.14) // float32 | Longitude
+	radius := float32(8.14) // float32 | Radius in meters
+	limit := int32(56) // int32 | Limit of stops to return, default 9 (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.BusAPI.ApiStopsFindLocationImageGet(context.Background()).Lat(lat).Lon(lon).Radius(radius).Limit(limit).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `BusAPI.ApiStopsFindLocationImageGet``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ApiStopsFindLocationImageGet`: ApiNearbyStops
+	fmt.Fprintf(os.Stdout, "Response from `BusAPI.ApiStopsFindLocationImageGet`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiApiStopsFindLocationImageGetRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **lat** | **float32** | Latitude | 
+ **lon** | **float32** | Longitude | 
+ **radius** | **float32** | Radius in meters | 
+ **limit** | **int32** | Limit of stops to return, default 9 | 
+
+### Return type
+
+[**ApiNearbyStops**](ApiNearbyStops.md)
 
 ### Authorization
 

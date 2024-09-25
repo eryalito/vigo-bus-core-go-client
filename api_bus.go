@@ -406,6 +406,162 @@ func (a *BusAPIService) ApiStopsFindLocationGetExecute(r ApiApiStopsFindLocation
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiApiStopsFindLocationImageGetRequest struct {
+	ctx context.Context
+	ApiService *BusAPIService
+	lat *float32
+	lon *float32
+	radius *float32
+	limit *int32
+}
+
+// Latitude
+func (r ApiApiStopsFindLocationImageGetRequest) Lat(lat float32) ApiApiStopsFindLocationImageGetRequest {
+	r.lat = &lat
+	return r
+}
+
+// Longitude
+func (r ApiApiStopsFindLocationImageGetRequest) Lon(lon float32) ApiApiStopsFindLocationImageGetRequest {
+	r.lon = &lon
+	return r
+}
+
+// Radius in meters
+func (r ApiApiStopsFindLocationImageGetRequest) Radius(radius float32) ApiApiStopsFindLocationImageGetRequest {
+	r.radius = &radius
+	return r
+}
+
+// Limit of stops to return, default 9
+func (r ApiApiStopsFindLocationImageGetRequest) Limit(limit int32) ApiApiStopsFindLocationImageGetRequest {
+	r.limit = &limit
+	return r
+}
+
+func (r ApiApiStopsFindLocationImageGetRequest) Execute() (*ApiNearbyStops, *http.Response, error) {
+	return r.ApiService.ApiStopsFindLocationImageGetExecute(r)
+}
+
+/*
+ApiStopsFindLocationImageGet Get the nearby stops as a PNG image and JSON array
+
+Provide the nearby stops for a location and return a PNG image and JSON array
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiApiStopsFindLocationImageGetRequest
+*/
+func (a *BusAPIService) ApiStopsFindLocationImageGet(ctx context.Context) ApiApiStopsFindLocationImageGetRequest {
+	return ApiApiStopsFindLocationImageGetRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return ApiNearbyStops
+func (a *BusAPIService) ApiStopsFindLocationImageGetExecute(r ApiApiStopsFindLocationImageGetRequest) (*ApiNearbyStops, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *ApiNearbyStops
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BusAPIService.ApiStopsFindLocationImageGet")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/api/stops/find/location/image"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.lat == nil {
+		return localVarReturnValue, nil, reportError("lat is required and must be specified")
+	}
+	if r.lon == nil {
+		return localVarReturnValue, nil, reportError("lon is required and must be specified")
+	}
+	if r.radius == nil {
+		return localVarReturnValue, nil, reportError("radius is required and must be specified")
+	}
+
+	parameterAddToHeaderOrQuery(localVarQueryParams, "lat", r.lat, "form", "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "lon", r.lon, "form", "")
+	parameterAddToHeaderOrQuery(localVarQueryParams, "radius", r.radius, "form", "")
+	if r.limit != nil {
+		parameterAddToHeaderOrQuery(localVarQueryParams, "limit", r.limit, "form", "")
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	if r.ctx != nil {
+		// API Key Authentication
+		if auth, ok := r.ctx.Value(ContextAPIKeys).(map[string]APIKey); ok {
+			if apiKey, ok := auth["BearerAuth"]; ok {
+				var key string
+				if apiKey.Prefix != "" {
+					key = apiKey.Prefix + " " + apiKey.Key
+				} else {
+					key = apiKey.Key
+				}
+				localVarHeaderParams["Authorization"] = key
+			}
+		}
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = io.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiApiStopsGetRequest struct {
 	ctx context.Context
 	ApiService *BusAPIService

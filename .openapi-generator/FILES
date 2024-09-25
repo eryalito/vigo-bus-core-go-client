@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 .travis.yml
 README.md
 api/openapi.yaml
@@ -9,6 +8,8 @@ client.go
 configuration.go
 docs/ApiIdentity.md
 docs/ApiLine.md
+docs/ApiNearbyStops.md
+docs/ApiNearbyStopsOrigin.md
 docs/ApiProviderType.md
 docs/ApiSchedule.md
 docs/ApiStop.md
@@ -21,12 +22,12 @@ go.mod
 go.sum
 model_api_identity.go
 model_api_line.go
+model_api_nearby_stops.go
+model_api_nearby_stops_origin.go
 model_api_provider_type.go
 model_api_schedule.go
 model_api_stop.go
 model_api_stop_location.go
 model_api_stop_schedule.go
 response.go
-test/api_bus_test.go
-test/api_identity_test.go
 utils.go

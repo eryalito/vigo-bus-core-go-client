@@ -1,47 +1,144 @@
 openapi: 3.0.0
 info:
-  contact: {}
   description: This is the API for the Vigo Bus Core project.
   title: Vigo Bus Core API
+  contact: {}
   version: "1.0"
 paths:
   /api/lines:
     get:
       description: Provide a list of all the lines
+      tags:
+        - Bus
+      summary: List all of the lines
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
+                type: array
                 items:
                   $ref: "#/components/schemas/api.Line"
-                type: array
-      summary: List all of the lines
-      tags:
-        - Bus
   /api/stops:
     get:
       description: Provide a list of all the stops
+      tags:
+        - Bus
+      summary: List all of the stops
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
+                type: array
                 items:
                   $ref: "#/components/schemas/api.Stop"
-                type: array
-      summary: List all of the stops
+  /api/stops/find:
+    get:
+      description: Provide a list of stops that match the text in their name
       tags:
         - Bus
+      summary: Find a stop by text in its name
+      parameters:
+        - description: Text to search for in stop name
+          name: text
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/api.Stop"
+  /api/stops/find/location:
+    get:
+      description: Provide a list of stops in a given radius around a location
+      tags:
+        - Bus
+      summary: Find a stop by its location
+      parameters:
+        - description: Latitude
+          name: lat
+          in: query
+          required: true
+          schema:
+            type: number
+        - description: Longitude
+          name: lon
+          in: query
+          required: true
+          schema:
+            type: number
+        - description: Radius in meters
+          name: radius
+          in: query
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/api.Stop"
+  /api/stops/find/location/image:
+    get:
+      description: Provide the nearby stops for a location and return a PNG image and
+        JSON array
+      tags:
+        - Bus
+      summary: Get the nearby stops as a PNG image and JSON array
+      parameters:
+        - description: Latitude
+          name: lat
+          in: query
+          required: true
+          schema:
+            type: number
+        - description: Longitude
+          name: lon
+          in: query
+          required: true
+          schema:
+            type: number
+        - description: Radius in meters
+          name: radius
+          in: query
+          required: true
+          schema:
+            type: number
+        - description: Limit of stops to return, default 9
+          name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.NearbyStops"
   "/api/stops/{stop_number}":
     get:
       description: Provide a stop by its number
+      tags:
+        - Bus
+      summary: Get a stop by its number
       parameters:
         - description: Stop Number
-          in: path
           name: stop_number
+          in: path
           required: true
           schema:
             type: integer
@@ -52,16 +149,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/api.Stop"
-      summary: Get a stop by its number
-      tags:
-        - Bus
   "/api/stops/{stop_number}/schedule":
     get:
       description: Provide the schedule for a stop
+      tags:
+        - Bus
+      summary: Get the schedule for a stop
       parameters:
         - description: Stop Number
-          in: path
           name: stop_number
+          in: path
           required: true
           schema:
             type: integer
@@ -71,81 +168,25 @@ paths:
           content:
             application/json:
               schema:
+                type: array
                 items:
                   $ref: "#/components/schemas/api.StopSchedule"
-                type: array
-      summary: Get the schedule for a stop
-      tags:
-        - Bus
-  /api/stops/find:
-    get:
-      description: Provide a list of stops that match the text in their name
-      parameters:
-        - description: Text to search for in stop name
-          in: query
-          name: text
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/api.Stop"
-                type: array
-      summary: Find a stop by text in its name
-      tags:
-        - Bus
-  /api/stops/find/location:
-    get:
-      description: Provide a list of stops in a given radius around a location
-      parameters:
-        - description: Latitude
-          in: query
-          name: lat
-          required: true
-          schema:
-            type: number
-        - description: Longitude
-          in: query
-          name: lon
-          required: true
-          schema:
-            type: number
-        - description: Radius in meters
-          in: query
-          name: radius
-          required: true
-          schema:
-            type: number
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: "#/components/schemas/api.Stop"
-                type: array
-      summary: Find a stop by its location
-      tags:
-        - Bus
   "/api/users/{provider}/{uuid}":
     get:
       description: Provide a user by its UUID for a specific provider
+      tags:
+        - Identity
+      summary: Get a user by its UUID for a specific provider
       parameters:
         - description: Provider
-          in: path
           name: provider
+          in: path
           required: true
           schema:
             type: string
         - description: UUID
-          in: path
           name: uuid
+          in: path
           required: true
           schema:
             type: string
@@ -156,56 +197,24 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/api.Identity"
-      summary: Get a user by its UUID for a specific provider
-      tags:
-        - Identity
     post:
       description: Create a new user
-      parameters:
-        - description: Provider
-          in: path
-          name: provider
-          required: true
-          schema:
-            type: string
-        - description: UUID
-          in: path
-          name: uuid
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/api.Identity"
+      tags:
+        - Identity
       summary: Create a new user
-      tags:
-        - Identity
-  "/api/users/{provider}/{uuid}/favorite_stops/{stop_number}":
-    delete:
-      description: Remove a favorite stop from a user
       parameters:
         - description: Provider
-          in: path
           name: provider
+          in: path
           required: true
           schema:
             type: string
         - description: UUID
-          in: path
           name: uuid
+          in: path
           required: true
           schema:
             type: string
-        - description: Stop Number
-          in: path
-          name: stop_number
-          required: true
-          schema:
-            type: integer
       responses:
         "200":
           description: OK
@@ -213,27 +222,28 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/api.Identity"
-      summary: Remove a favorite stop from a user
-      tags:
-        - Identity
+  "/api/users/{provider}/{uuid}/favorite_stops/{stop_number}":
     post:
       description: Add a favorite stop to a user
+      tags:
+        - Identity
+      summary: Add a favorite stop to a user
       parameters:
         - description: Provider
-          in: path
           name: provider
+          in: path
           required: true
           schema:
             type: string
         - description: UUID
-          in: path
           name: uuid
+          in: path
           required: true
           schema:
             type: string
         - description: Stop Number
-          in: path
           name: stop_number
+          in: path
           required: true
           schema:
             type: integer
@@ -244,9 +254,37 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/api.Identity"
-      summary: Add a favorite stop to a user
+    delete:
+      description: Remove a favorite stop from a user
       tags:
         - Identity
+      summary: Remove a favorite stop from a user
+      parameters:
+        - description: Provider
+          name: provider
+          in: path
+          required: true
+          schema:
+            type: string
+        - description: UUID
+          name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+        - description: Stop Number
+          name: stop_number
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.Identity"
 security:
   - BearerAuth: []
 servers:
@@ -255,30 +293,31 @@ components:
   securitySchemes:
     BearerAuth:
       description: "\"Type 'Bearer' followed by a space and then your token.\""
-      in: header
-      name: Authorization
       type: apiKey
+      name: Authorization
+      in: header
   schemas:
     api.Identity:
+      type: object
       properties:
         favorite_stops:
           description: FavoriteStops is a list of the user's favorite stops
+          type: array
           items:
             $ref: "#/components/schemas/api.Stop"
-          type: array
         id:
           description: ID is the unique identifier of the identity
           type: integer
         provider:
+          description: Provider is the type of the identity provider
           allOf:
             - $ref: "#/components/schemas/api.ProviderType"
-          description: Provider is the type of the identity provider
         uuid:
           description: UUID is the unique identifier of the identity, usually provided by
             the auth provider
           type: string
-      type: object
     api.Line:
+      type: object
       properties:
         id:
           description: ID is the unique identifier of the line
@@ -286,33 +325,52 @@ components:
         name:
           description: Name is the name of the line provided by the bus company
           type: string
+    api.NearbyStops:
       type: object
+      properties:
+        image:
+          type: string
+        origin:
+          type: object
+          properties:
+            lat:
+              type: number
+            lon:
+              type: number
+        radius:
+          type: number
+        stops:
+          type: array
+          items:
+            $ref: "#/components/schemas/api.Stop"
     api.ProviderType:
+      type: string
       enum:
         - telegram
-      type: string
       x-enum-varnames:
         - ProviderTypeTelegram
     api.Schedule:
+      type: object
       properties:
         line:
+          description: Line is the line that the schedule is for
           allOf:
             - $ref: "#/components/schemas/api.Line"
-          description: Line is the line that the schedule is for
         route:
           description: Route is the route that the schedule is for
           type: string
         time:
           description: Time is the time of the schedule
           type: integer
-      type: object
     api.Stop:
+      type: object
       properties:
         id:
           description: ID is the unique identifier of the stop
           type: integer
         location:
           description: Location is the geographical location of the stop
+          type: object
           properties:
             lat:
               description: Lat is the latitude of the stop
@@ -320,7 +378,6 @@ components:
             lon:
               description: Lon is the longitude of the stop
               type: number
-          type: object
         name:
           description: Name is the name of the stop
           type: string
@@ -330,16 +387,15 @@ components:
         stop_number:
           description: StopNumber is the number of the stop provided by the bus company
           type: integer
-      type: object
     api.StopSchedule:
+      type: object
       properties:
         schedules:
           description: Schedules is a list of the schedules for the stop
+          type: array
           items:
             $ref: "#/components/schemas/api.Schedule"
-          type: array
         stop:
+          description: Stop is the stop that the schedule is for
           allOf:
             - $ref: "#/components/schemas/api.Stop"
-          description: Stop is the stop that the schedule is for
-      type: object
