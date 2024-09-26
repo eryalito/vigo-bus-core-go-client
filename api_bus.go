@@ -798,7 +798,7 @@ type ApiApiStopsStopNumberScheduleGetRequest struct {
 	stopNumber int32
 }
 
-func (r ApiApiStopsStopNumberScheduleGetRequest) Execute() ([]ApiStopSchedule, *http.Response, error) {
+func (r ApiApiStopsStopNumberScheduleGetRequest) Execute() (*ApiStopSchedule, *http.Response, error) {
 	return r.ApiService.ApiStopsStopNumberScheduleGetExecute(r)
 }
 
@@ -820,13 +820,13 @@ func (a *BusAPIService) ApiStopsStopNumberScheduleGet(ctx context.Context, stopN
 }
 
 // Execute executes the request
-//  @return []ApiStopSchedule
-func (a *BusAPIService) ApiStopsStopNumberScheduleGetExecute(r ApiApiStopsStopNumberScheduleGetRequest) ([]ApiStopSchedule, *http.Response, error) {
+//  @return ApiStopSchedule
+func (a *BusAPIService) ApiStopsStopNumberScheduleGetExecute(r ApiApiStopsStopNumberScheduleGetRequest) (*ApiStopSchedule, *http.Response, error) {
 	var (
 		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
 		formFiles            []formFile
-		localVarReturnValue  []ApiStopSchedule
+		localVarReturnValue  *ApiStopSchedule
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BusAPIService.ApiStopsStopNumberScheduleGet")

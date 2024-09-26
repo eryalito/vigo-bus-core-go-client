@@ -416,7 +416,7 @@ Name | Type | Description  | Notes
 
 ## ApiStopsStopNumberScheduleGet
 
-> []ApiStopSchedule ApiStopsStopNumberScheduleGet(ctx, stopNumber).Execute()
+> ApiStopSchedule ApiStopsStopNumberScheduleGet(ctx, stopNumber).Execute()
 
 Get the schedule for a stop
 
@@ -444,7 +444,7 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Error when calling `BusAPI.ApiStopsStopNumberScheduleGet``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
 	}
-	// response from `ApiStopsStopNumberScheduleGet`: []ApiStopSchedule
+	// response from `ApiStopsStopNumberScheduleGet`: ApiStopSchedule
 	fmt.Fprintf(os.Stdout, "Response from `BusAPI.ApiStopsStopNumberScheduleGet`: %v\n", resp)
 }
 ```
@@ -468,7 +468,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**[]ApiStopSchedule**](ApiStopSchedule.md)
+[**ApiStopSchedule**](ApiStopSchedule.md)
 
 ### Authorization
 

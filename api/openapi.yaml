@@ -189,9 +189,7 @@ paths:
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/api.StopSchedule'
-                type: array
+                $ref: '#/components/schemas/api.StopSchedule'
           description: OK
       summary: Get the schedule for a stop
       tags:

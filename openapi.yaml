@@ -168,9 +168,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/api.StopSchedule"
+                $ref: "#/components/schemas/api.StopSchedule"
   "/api/users/{provider}/{uuid}":
     get:
       description: Provide a user by its UUID for a specific provider
