@@ -88,6 +88,7 @@ Class | Method | HTTP request | Description
 *IdentityAPI* | [**ApiUsersProviderUuidFavoriteStopsStopNumberDelete**](docs/IdentityAPI.md#apiusersprovideruuidfavoritestopsstopnumberdelete) | **Delete** /api/users/{provider}/{uuid}/favorite_stops/{stop_number} | Remove a favorite stop from a user
 *IdentityAPI* | [**ApiUsersProviderUuidFavoriteStopsStopNumberPost**](docs/IdentityAPI.md#apiusersprovideruuidfavoritestopsstopnumberpost) | **Post** /api/users/{provider}/{uuid}/favorite_stops/{stop_number} | Add a favorite stop to a user
 *IdentityAPI* | [**ApiUsersProviderUuidGet**](docs/IdentityAPI.md#apiusersprovideruuidget) | **Get** /api/users/{provider}/{uuid} | Get a user by its UUID for a specific provider
+*IdentityAPI* | [**ApiUsersProviderUuidMetadataPut**](docs/IdentityAPI.md#apiusersprovideruuidmetadataput) | **Put** /api/users/{provider}/{uuid}/metadata | Update the metadata of a user
 *IdentityAPI* | [**ApiUsersProviderUuidPost**](docs/IdentityAPI.md#apiusersprovideruuidpost) | **Post** /api/users/{provider}/{uuid} | Create a new user
 
 

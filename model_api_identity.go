@@ -23,6 +23,8 @@ type ApiIdentity struct {
 	FavoriteStops []ApiStop `json:"favorite_stops,omitempty"`
 	// ID is the unique identifier of the identity
 	Id *int32 `json:"id,omitempty"`
+	// Metadata is a genric string that holds additional information about the identity
+	Metadata *string `json:"metadata,omitempty"`
 	// Provider is the type of the identity provider
 	Provider *ApiProviderType `json:"provider,omitempty"`
 	// UUID is the unique identifier of the identity, usually provided by the auth provider
@@ -110,6 +112,38 @@ func (o *ApiIdentity) SetId(v int32) {
 	o.Id = &v
 }
 
+// GetMetadata returns the Metadata field value if set, zero value otherwise.
+func (o *ApiIdentity) GetMetadata() string {
+	if o == nil || IsNil(o.Metadata) {
+		var ret string
+		return ret
+	}
+	return *o.Metadata
+}
+
+// GetMetadataOk returns a tuple with the Metadata field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ApiIdentity) GetMetadataOk() (*string, bool) {
+	if o == nil || IsNil(o.Metadata) {
+		return nil, false
+	}
+	return o.Metadata, true
+}
+
+// HasMetadata returns a boolean if a field has been set.
+func (o *ApiIdentity) HasMetadata() bool {
+	if o != nil && !IsNil(o.Metadata) {
+		return true
+	}
+
+	return false
+}
+
+// SetMetadata gets a reference to the given string and assigns it to the Metadata field.
+func (o *ApiIdentity) SetMetadata(v string) {
+	o.Metadata = &v
+}
+
 // GetProvider returns the Provider field value if set, zero value otherwise.
 func (o *ApiIdentity) GetProvider() ApiProviderType {
 	if o == nil || IsNil(o.Provider) {
@@ -189,6 +223,9 @@ func (o ApiIdentity) ToMap() (map[string]interface{}, error) {
 	}
 	if !IsNil(o.Id) {
 		toSerialize["id"] = o.Id
+	}
+	if !IsNil(o.Metadata) {
+		toSerialize["metadata"] = o.Metadata
 	}
 	if !IsNil(o.Provider) {
 		toSerialize["provider"] = o.Provider

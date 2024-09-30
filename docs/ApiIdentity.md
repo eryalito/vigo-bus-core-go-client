@@ -6,6 +6,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **FavoriteStops** | Pointer to [**[]ApiStop**](ApiStop.md) | FavoriteStops is a list of the user&#39;s favorite stops | [optional] 
 **Id** | Pointer to **int32** | ID is the unique identifier of the identity | [optional] 
+**Metadata** | Pointer to **string** | Metadata is a genric string that holds additional information about the identity | [optional] 
 **Provider** | Pointer to [**ApiProviderType**](ApiProviderType.md) | Provider is the type of the identity provider | [optional] 
 **Uuid** | Pointer to **string** | UUID is the unique identifier of the identity, usually provided by the auth provider | [optional] 
 
@@ -77,6 +78,31 @@ SetId sets Id field to given value.
 `func (o *ApiIdentity) HasId() bool`
 
 HasId returns a boolean if a field has been set.
+
+### GetMetadata
+
+`func (o *ApiIdentity) GetMetadata() string`
+
+GetMetadata returns the Metadata field if non-nil, zero value otherwise.
+
+### GetMetadataOk
+
+`func (o *ApiIdentity) GetMetadataOk() (*string, bool)`
+
+GetMetadataOk returns a tuple with the Metadata field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetMetadata
+
+`func (o *ApiIdentity) SetMetadata(v string)`
+
+SetMetadata sets Metadata field to given value.
+
+### HasMetadata
+
+`func (o *ApiIdentity) HasMetadata() bool`
+
+HasMetadata returns a boolean if a field has been set.
 
 ### GetProvider
 

@@ -328,10 +328,48 @@ paths:
       summary: Add a favorite stop to a user
       tags:
       - Identity
+  /api/users/{provider}/{uuid}/metadata:
+    put:
+      description: Update the metadata of a user
+      parameters:
+      - description: Provider
+        explode: false
+        in: path
+        name: provider
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: UUID
+        explode: false
+        in: path
+        name: uuid
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        description: Metadata
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Identity'
+          description: OK
+      summary: Update the metadata of a user
+      tags:
+      - Identity
 components:
   schemas:
     api.Identity:
       example:
+        metadata: metadata
         favorite_stops:
         - stop_id: 5
           name: name
@@ -359,6 +397,10 @@ components:
         id:
           description: ID is the unique identifier of the identity
           type: integer
+        metadata:
+          description: Metadata is a genric string that holds additional information
+            about the identity
+          type: string
         provider:
           allOf:
           - $ref: '#/components/schemas/api.ProviderType'

@@ -283,6 +283,39 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/api.Identity"
+  "/api/users/{provider}/{uuid}/metadata":
+    put:
+      description: Update the metadata of a user
+      tags:
+        - Identity
+      summary: Update the metadata of a user
+      parameters:
+        - description: Provider
+          name: provider
+          in: path
+          required: true
+          schema:
+            type: string
+        - description: UUID
+          name: uuid
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        description: Metadata
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/api.Identity"
 security:
   - BearerAuth: []
 servers:
@@ -306,6 +339,10 @@ components:
         id:
           description: ID is the unique identifier of the identity
           type: integer
+        metadata:
+          description: Metadata is a genric string that holds additional information about
+            the identity
+          type: string
         provider:
           description: Provider is the type of the identity provider
           allOf:
